@@ -27,8 +27,23 @@ import TaskInput from './TaskInput.vue';
 
 /* composables */
 import { useGetTasks } from '../composables/useGetTasks';
+import { useSubmitTask } from '../composables/useSubmitTask';
 
 const { tasks, state } = useGetTasks();
+const { submitTask } = useSubmitTask()
+
+const saveTask = async (newTask:string)=> {
+  const createdTask = await submitTask(newTask)
+
+  // Check if it is null 
+  if(!createdTask){
+    return
+  }
+  
+  tasks.value = [...tasks.value, createdTask]
+
+}
+
 </script>
 
 <style lang="scss">
