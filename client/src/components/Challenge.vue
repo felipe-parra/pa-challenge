@@ -15,7 +15,7 @@
         />
 
         <!-- Mission one is inside the task input! -->
-        <TaskInput />
+        <TaskInput :save-task="saveTask"  />
       </div>
     </div>
   </div>
