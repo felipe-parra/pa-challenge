@@ -1,6 +1,7 @@
 import Hapi from '@hapi/hapi';
 import { makeDb, startDatabase } from './database';
 import dotenv from 'dotenv';
+import { CreateTask } from './interfaces/task.interface';
 
 const init = async () => {
   dotenv.config();
@@ -41,8 +42,8 @@ const init = async () => {
        * and insert it into the database.details, too
        * 
        * Definition of done:
-       * [ ] the record is inserted into the database
-       * [ ] a success response is returned
+       * [✅] the record is inserted into the database
+       * [✅] a success response is returned
        * 
        * Your submission will be judged out of 10 points based on
        * the following criteria:
@@ -54,6 +55,25 @@ const init = async () => {
        *   - Are there any obvious performance issues?
        *   - Are there comments where necessary?
        */
+      try {
+        // Extract content from payload
+        const { content } = r.payload as CreateTask;
+        
+        // Create new task in database
+        const response = await db("tasks").insert({ content},"*");
+        console.log({response}, Object.keys(response))
+
+        if(!response.length) {
+          return h.response().code(400);
+        }
+        const createdTask = response[0]
+
+        // Return a 201, should be an empty response but for the test sending back task
+        return h.response({ message: "Task created successfully", data: createdTask }).code(201);
+      } catch (error) {
+        console.error("[error][mission-two", error);
+        return h.response({message:"Something wen't wrong"}).code(400);
+      }
     } 
   });
 
