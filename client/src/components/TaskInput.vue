@@ -21,7 +21,7 @@
         - Is the code easy to read and understand? - 2 points
     -->
     <input v-model="newTask" type="text" placeholder="Add a new task" />
-    <button>Add</button>
+    <button @click="onSaveTask">Add</button>
   </div>
 </template>
 
@@ -33,6 +33,17 @@
  * Good luck!
  */
 const newTask = defineModel("")
+const { saveTask } = defineProps(["saveTask"])
+
+const onSaveTask = () => {
+  // Check if the input is empty
+  if(newTask.value === undefined || newTask.value === "") {  
+    return
+  }
+  
+  saveTask(newTask.value)
+  newTask.value = ""
+}
 
 </script>
 <style scoped lang="scss">
